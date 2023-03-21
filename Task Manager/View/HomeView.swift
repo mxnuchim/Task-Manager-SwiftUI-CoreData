@@ -118,15 +118,19 @@ struct HomeView: View {
                 Spacer()
                 
                 
-                HStack(spacing: 25){                    Button {
-                        taskModel.editTask = task
-                        taskModel.openTaskEdit = true
-                        taskModel.setupTask()
-                    } label: {
-                        Image(systemName: "square.and.pencil")
-                            .font(.title3)
-                            .foregroundColor(.white)
+                HStack(spacing: 25){
+                    if !task.isCompleted {
+                        Button {
+                            taskModel.editTask = task
+                            taskModel.openTaskEdit = true
+                            taskModel.setupTask()
+                        } label: {
+                            Image(systemName: "square.and.pencil")
+                                .font(.title3)
+                                .foregroundColor(.white)
+                        }
                     }
+                    
                     
                     Button {
                         env.managedObjectContext.delete(task)
@@ -166,23 +170,28 @@ struct HomeView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 
                 if !task.isCompleted && taskModel.currentTab != "Missed" {
-                    Button {
-                        task.isCompleted.toggle()
-                        try? env.managedObjectContext.save()
-                    } label: {
-                        Image(systemName: "checkmark.circle")
-                            .font(.title)
-                            .foregroundColor(.white)
+                    HStack(spacing: 15){
+                        Text("Incomplete")
+                        Button {
+                            task.isCompleted = true
+                            try? env.managedObjectContext.save()
+                        } label: {
+                            Image(systemName: "checkmark.circle")
+                                .font(.title)
+                                .foregroundColor(.white)
+                        }
                     }
                 } else {
-                    Button {
-                        task.isCompleted.toggle()
-                        try? env.managedObjectContext.save()
-                    } label: {
-                        Image(systemName: "checkmark.circle.fill")
-                            .font(.title)
-                            .foregroundColor(.white)
+                    HStack(spacing: 10) {
+                        Text("Completed")
+                        Button {
                             
+                        } label: {
+                            Image(systemName: "checkmark.circle.fill")
+                                .font(.title)
+                                .foregroundColor(.white)
+                            
+                        }
                     }
                 }
             }
