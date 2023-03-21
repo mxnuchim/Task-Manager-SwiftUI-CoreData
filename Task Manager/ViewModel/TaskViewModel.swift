@@ -37,9 +37,11 @@ class TaskViewModel: ObservableObject {
         task.type = taskType
         task.isCompleted = false
         
-        if let _ = try? context.save() {
+        if let x = try? context.save() {
+            print(x)
             return true
         }
+        
         return false
     }
     

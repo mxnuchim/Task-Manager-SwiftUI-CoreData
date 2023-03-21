@@ -16,7 +16,7 @@ struct HomeView: View {
     @FetchRequest(entity: Task.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Task.deadline, ascending: false)], predicate: nil, animation: .easeInOut) var tasks: FetchedResults<Task>
     
     var body: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             VStack {
                 VStack (alignment: .leading, spacing: 8) {
                     Text("Welcome back 👋")
@@ -117,21 +117,21 @@ struct HomeView: View {
                 
                 Spacer()
                 
-                /// - Show edit button for only uncompleted tasks
-                if !task.isCompleted && taskModel.currentTab != "Missed" {
-                    Button {
+                
+                HStack(spacing: 25){                    Button {
                         taskModel.editTask = task
                         taskModel.openTaskEdit = true
                         taskModel.setupTask()
                     } label: {
                         Image(systemName: "square.and.pencil")
-                            .tint(.white)
+                            .font(.title3)
+                            .foregroundColor(.white)
                     }
-                } else {
+                    
                     Button {
-                            env.managedObjectContext.delete(task)
-                            try? env.managedObjectContext.save()
-                            env.dismiss()
+                        env.managedObjectContext.delete(task)
+                        try? env.managedObjectContext.save()
+                        env.dismiss()
                     } label: {
                         Image(systemName: "trash")
                             .font(.title3)

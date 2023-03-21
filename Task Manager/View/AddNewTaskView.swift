@@ -27,20 +27,6 @@ struct AddNewTaskView: View {
                             .foregroundColor(env.colorScheme == .dark ? .white : .black)
                     }
                 }
-                .overlay(alignment: .trailing) {
-                    Button {
-                        if let editTask = taskModel.editTask{
-                            env.managedObjectContext.delete(editTask)
-                            try? env.managedObjectContext.save()
-                            env.dismiss()
-                        }
-                    } label: {
-                        Image(systemName: "trash")
-                            .font(.title3)
-                            .foregroundColor(.red)
-                    }
-                    .opacity(taskModel.editTask == nil ? 0 : 1)
-                }
             
             VStack(alignment: .leading, spacing: 12) {
                 Text("Choose a color")
